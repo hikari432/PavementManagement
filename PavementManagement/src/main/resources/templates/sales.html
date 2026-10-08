@@ -1,0 +1,159 @@
+
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>売上管理 | 舗装会社 業務管理システム</title>
+
+    <!-- 共通CSS -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+    <!-- ヘッダー -->
+    <header>
+        <h1>舗装会社 業務管理システム</h1>
+
+        <div class="header-right">
+            <a th:href="@{/}" class="header-link">
+                ダッシュボード
+            </a>
+        </div>
+    </header>
+
+    <main>
+
+        <!-- ページタイトル -->
+        <section class="intro">
+            <h2>売上管理</h2>
+            <p>工事ごとの売上金額や入金状況を管理する画面です。</p>
+        </section>
+
+        <!-- ページ上部の操作 -->
+        <div class="page-actions">
+
+            <a th:href="@{/}" class="btn btn-secondary">
+                ← トップページに戻る
+            </a>
+
+            <a th:href="@{/sales/new}"
+               class="btn btn-primary"
+               th:if="${isAdmin}">
+                ＋ 売上を登録する
+            </a>
+
+        </div>
+
+        <!-- 売上一覧 -->
+        <section class="content-panel">
+
+            <h2 class="section-title">売上一覧</h2>
+
+            <div class="table-wrapper">
+
+                <table class="data-table">
+
+                    <thead>
+                        <tr>
+                            <th>売上名</th>
+                            <th>工事名</th>
+                            <th>売上金額</th>
+                            <th>売上日</th>
+                            <th>入金状況</th>
+                            <th th:if="${isAdmin}">操作</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <!-- 売上データを1件ずつ表示 -->
+                        <tr th:each="item : ${sales}">
+
+                            <!-- 売上名 -->
+                            <td th:text="${item.salesName}">
+                                売上名
+                            </td>
+
+                            <!-- 工事名 -->
+                            <td th:text="${item.project != null ? item.project.projectName : '未設定'}">
+                                工事名
+                            </td>
+
+                            <!-- 売上金額 -->
+                            <td th:text="${#numbers.formatInteger(item.amount, 1, 'COMMA')} + '円'">
+                                0円
+                            </td>
+
+                            <!-- 売上日 -->
+                            <td th:text="${item.salesDate}">
+                                売上日
+                            </td>
+
+                            <!-- 入金状況 -->
+                            <td>
+                                <span class="status-badge"
+                                      th:text="${item.paymentStatus}">
+                                    入金状況
+                                </span>
+                            </td>
+
+                            <!-- 管理者のみ操作可能 -->
+                            <td th:if="${isAdmin}">
+
+                                <div class="table-actions">
+
+                                    <!-- 編集 -->
+                                    <a th:href="@{/sales/edit/{id}(id=${item.id})}"
+                                       class="btn btn-secondary btn-small">
+                                        編集
+                                    </a>
+
+                                    <!-- 削除 -->
+                                    <form th:action="@{/sales/delete/{id}(id=${item.id})}"
+                                          method="post"
+                                          onsubmit="return confirm('この売上を削除しますか？');">
+
+                                        <button type="submit"
+                                                class="btn btn-danger btn-small">
+                                            削除
+                                        </button>
+
+                                    </form>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                        <!-- データが0件の場合 -->
+                        <tr th:if="${#lists.isEmpty(sales)}">
+
+                            <td th:colspan="${isAdmin} ? 6 : 5"
+                                class="empty-message">
+                                売上データが登録されていません。
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer>
+        Pavement Management System
+    </footer>
+
+</body>
+</html>
+

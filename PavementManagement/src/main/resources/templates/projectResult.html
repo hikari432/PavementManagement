@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>工事登録確認</title>
+
+    <style>
+        body {
+            font-size: 18px;
+        }
+
+        h1 {
+            font-size: 32px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 600px;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #eeeeee;
+            width: 150px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>工事登録確認</h1>
+
+    <p>入力された工事情報を受け取りました。</p>
+
+    <table border="1">
+        <tr>
+            <th>工事名</th>
+            <td th:text="${project.projectName}"></td>
+        </tr>
+
+        <tr>
+            <th>発注者</th>
+            <td th:text="${project.clientName}"></td>
+        </tr>
+
+        <tr>
+            <th>開始日</th>
+            <td th:text="${project.startDate}"></td>
+        </tr>
+
+        <tr>
+            <th>終了日</th>
+            <td th:text="${project.endDate}"></td>
+        </tr>
+
+        <tr>
+            <th>状態</th>
+            <td th:text="${project.status}"></td>
+        </tr>
+    </table>
+
+    <p><a href="/projects">工事一覧に戻る</a></p>
+
+</body>
+</html>

@@ -1,0 +1,144 @@
+
+
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>経費一覧 | 舗装会社 業務管理システム</title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+    <!-- ヘッダー -->
+    <header>
+        <h1>舗装会社 業務管理システム</h1>
+
+        <div class="header-right">
+            <a th:href="@{/}" class="header-link">
+                ホームに戻る
+            </a>
+        </div>
+    </header>
+
+    <main>
+
+        <!-- ページタイトル -->
+        <section class="intro">
+            <h2>経費一覧</h2>
+            <p>工事にかかった経費を一覧で確認・管理できます。</p>
+        </section>
+
+        <!-- 操作ボタン -->
+        <div class="page-actions">
+
+            <a th:if="${isAdmin}"
+               th:href="@{/expenses/new}"
+               class="btn btn-primary">
+                ＋ 経費を登録する
+            </a>
+
+        </div>
+
+        <!-- 経費一覧 -->
+        <section class="content-panel">
+
+            <h2 class="section-title">登録済み経費</h2>
+
+            <!-- データがない場合 -->
+            <p class="empty-message"
+               th:if="${expenses == null or #lists.isEmpty(expenses)}">
+                登録されている経費はありません。
+            </p>
+
+            <!-- データがある場合 -->
+            <div class="table-wrapper"
+                 th:if="${expenses != null and !#lists.isEmpty(expenses)}">
+
+                <table class="data-table">
+
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>経費名</th>
+                            <th>工事名</th>
+                            <th>金額</th>
+                            <th>支払日</th>
+                            <th>経費区分</th>
+                            <th th:if="${isAdmin}">操作</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr th:each="expense : ${expenses}">
+
+                            <!-- ID -->
+                            <td th:text="${expense.id}"></td>
+
+                            <!-- 経費名 -->
+                            <td th:text="${expense.expenseName}"></td>
+
+                            <!-- 工事名 -->
+                            <td th:text="${expense.project != null ? expense.project.projectName : '未設定'}"></td>
+
+                            <!-- 金額 -->
+                            <td th:text="${#numbers.formatInteger(expense.amount, 1, 'COMMA') + ' 円'}"></td>
+
+                            <!-- 支払日 -->
+                            <td th:text="${expense.paymentDate}"></td>
+
+                            <!-- 経費区分 -->
+                            <td>
+                                <span class="status-badge"
+                                      th:text="${expense.category}">
+                                </span>
+                            </td>
+
+                            <!-- 編集・削除 -->
+                            <td th:if="${isAdmin}">
+
+                                <div class="table-actions">
+
+                                    <a th:href="@{/expenses/edit/{id}(id=${expense.id})}"
+                                       class="btn btn-secondary btn-small">
+                                        編集
+                                    </a>
+
+                                    <form th:action="@{/expenses/delete/{id}(id=${expense.id})}"
+                                          method="post"
+                                          onsubmit="return confirm('この経費を削除しますか？');">
+
+                                        <button type="submit"
+                                                class="btn btn-danger btn-small">
+                                            削除
+                                        </button>
+
+                                    </form>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer>
+        Pavement Management System
+    </footer>
+
+</body>
+</html>

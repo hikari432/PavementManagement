@@ -1,0 +1,116 @@
+
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>工事別収支 | 舗装会社 業務管理システム</title>
+
+    <!-- 共通CSS -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+    <!-- ヘッダー -->
+    <header>
+        <h1>舗装会社 業務管理システム</h1>
+
+        <div class="header-right">
+            <a th:href="@{/}" class="header-link">
+                ダッシュボード
+            </a>
+        </div>
+    </header>
+
+    <main>
+
+        <!-- ページタイトル -->
+        <section class="intro">
+            <h2>工事別収支</h2>
+            <p>工事ごとの売上・経費・利益・利益率を確認できます。</p>
+        </section>
+
+        <!-- ページ上部の操作 -->
+        <div class="page-actions">
+
+            <a th:href="@{/}" class="btn btn-secondary">
+                ← トップページに戻る
+            </a>
+
+        </div>
+
+        <!-- 工事別収支一覧 -->
+        <section class="content-panel">
+
+            <h2 class="section-title">工事別収支一覧</h2>
+
+            <div class="table-wrapper">
+
+                <table class="data-table">
+
+                    <thead>
+                        <tr>
+                            <th>工事名</th>
+                            <th>売上</th>
+                            <th>経費</th>
+                            <th>利益</th>
+                            <th>利益率</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <!-- 工事ごとの収支を表示 -->
+                        <tr th:each="projectProfit : ${projectProfits}">
+
+                            <td>
+                                <a th:href="@{/project-profit/{projectName}(projectName=${projectProfit.projectName})}"
+                                   th:text="${projectProfit.projectName}">
+                                    工事名
+                                </a>
+                            </td>
+
+                            <td th:text="${#numbers.formatInteger(projectProfit.salesTotal, 1, 'COMMA')} + '円'">
+                                0円
+                            </td>
+
+                            <td th:text="${#numbers.formatInteger(projectProfit.expenseTotal, 1, 'COMMA')} + '円'">
+                                0円
+                            </td>
+
+                            <td th:text="${#numbers.formatInteger(projectProfit.profit, 1, 'COMMA')} + '円'">
+                                0円
+                            </td>
+
+                            <td th:text="${projectProfit.profitRate} + '%'">
+                                0%
+                            </td>
+
+                        </tr>
+
+                        <!-- データがない場合 -->
+                        <tr th:if="${#lists.isEmpty(projectProfits)}">
+                            <td colspan="5" class="empty-message">
+                                工事別の収支データがありません。
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer>
+        Pavement Management System
+    </footer>
+
+</body>
+</html>

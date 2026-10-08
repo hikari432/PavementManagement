@@ -1,0 +1,165 @@
+
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>売上登録 | 舗装会社 業務管理システム</title>
+
+    <!-- 共通CSS -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+    <!-- ヘッダー -->
+    <header>
+        <h1>舗装会社 業務管理システム</h1>
+
+        <div class="header-right">
+            <a th:href="@{/sales}" class="header-link">
+                売上一覧
+            </a>
+        </div>
+    </header>
+
+    <main>
+
+        <!-- ページタイトル -->
+        <section class="intro">
+            <h2>売上登録</h2>
+            <p>工事による売上情報を入力してください。</p>
+        </section>
+
+        <!-- 売上登録フォーム -->
+        <section class="content-panel form-panel">
+
+            <h2 class="section-title">売上情報</h2>
+
+            <form th:action="@{/sales}"
+                  th:object="${sales}"
+                  method="post">
+
+                <!-- 売上名 -->
+                <div class="form-group">
+
+                    <label for="salesName">売上名</label>
+
+                    <input type="text"
+                           id="salesName"
+                           th:field="*{salesName}"
+                           placeholder="売上名を入力">
+
+                    <span class="error"
+                          th:if="${#fields.hasErrors('salesName')}"
+                          th:errors="*{salesName}">
+                    </span>
+
+                </div>
+
+                <!-- 工事名 -->
+                <div class="form-group">
+
+                    <label for="project">工事名</label>
+
+                    <select id="project" th:field="*{project}">
+
+                        <option value="">選択してください</option>
+
+                        <option th:each="project : ${projects}"
+                                th:value="${project.id}"
+                                th:text="${project.projectName}">
+                        </option>
+
+                    </select>
+
+                    <span class="error"
+                          th:if="${#fields.hasErrors('project')}"
+                          th:errors="*{project}">
+                    </span>
+
+                </div>
+
+                <!-- 売上金額 -->
+                <div class="form-group">
+
+                    <label for="amount">売上金額（円）</label>
+
+                    <input type="number"
+                           id="amount"
+                           th:field="*{amount}"
+                           min="0"
+                           step="1"
+                           placeholder="金額を入力">
+
+                    <span class="error"
+                          th:if="${#fields.hasErrors('amount')}"
+                          th:errors="*{amount}">
+                    </span>
+
+                </div>
+
+                <!-- 売上日 -->
+                <div class="form-group">
+
+                    <label for="salesDate">売上日</label>
+
+                    <input type="date"
+                           id="salesDate"
+                           th:field="*{salesDate}">
+
+                    <span class="error"
+                          th:if="${#fields.hasErrors('salesDate')}"
+                          th:errors="*{salesDate}">
+                    </span>
+
+                </div>
+
+                <!-- 入金状況 -->
+                <div class="form-group">
+
+                    <label for="paymentStatus">入金状況</label>
+
+                    <select id="paymentStatus"
+                            th:field="*{paymentStatus}">
+
+                        <option value="">選択してください</option>
+                        <option value="未入金">未入金</option>
+                        <option value="入金済み">入金済み</option>
+
+                    </select>
+
+                    <span class="error"
+                          th:if="${#fields.hasErrors('paymentStatus')}"
+                          th:errors="*{paymentStatus}">
+                    </span>
+
+                </div>
+
+                <!-- 操作ボタン -->
+                <div class="form-actions">
+
+                    <button type="submit" class="btn btn-primary">
+                        登録する
+                    </button>
+
+                    <a th:href="@{/sales}" class="btn btn-secondary">
+                        キャンセル
+                    </a>
+
+                </div>
+
+            </form>
+
+        </section>
+
+    </main>
+
+    <footer>
+        Pavement Management System
+    </footer>
+
+</body>
+</html>

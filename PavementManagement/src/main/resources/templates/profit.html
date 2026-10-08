@@ -1,0 +1,292 @@
+
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>利益・収支 | 舗装会社 業務管理システム</title>
+
+    <!-- 共通CSS -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+    <!-- ヘッダー -->
+    <header>
+        <h1>舗装会社 業務管理システム</h1>
+
+        <div class="header-right">
+            <a th:href="@{/}" class="header-link">
+                ダッシュボード
+            </a>
+        </div>
+    </header>
+
+    <main>
+
+        <!-- ページタイトル -->
+        <section class="intro">
+            <h2>利益・収支</h2>
+            <p>売上・経費・利益をまとめて確認できます。</p>
+        </section>
+
+        <div class="page-actions">
+            <a th:href="@{/}" class="btn btn-secondary">
+                ← トップページに戻る
+            </a>
+        </div>
+
+        <!-- 全体集計 -->
+        <h2 class="section-title">全体の収支状況</h2>
+
+        <section class="dashboard">
+
+            <div class="card">
+                <div class="label">売上合計</div>
+
+                <div class="value"
+                     th:text="${#numbers.formatInteger(salesTotal, 1, 'COMMA')} + '円'">
+                    0円
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="label">経費合計</div>
+
+                <div class="value"
+                     th:text="${#numbers.formatInteger(expenseTotal, 1, 'COMMA')} + '円'">
+                    0円
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="label">利益</div>
+
+                <div class="value profit"
+                     th:text="${#numbers.formatInteger(profit, 1, 'COMMA')} + '円'">
+                    0円
+                </div>
+            </div>
+
+        </section>
+
+        <!-- 経費内訳 -->
+        <section class="content-panel profit-section">
+
+            <h2 class="section-title">経費内訳</h2>
+
+            <div class="table-wrapper">
+
+                <table class="data-table">
+
+                    <thead>
+                        <tr>
+                            <th>経費区分</th>
+                            <th>金額</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td>材料費</td>
+                            <td th:text="${#numbers.formatInteger(materialCost, 1, 'COMMA')} + '円'">
+                                0円
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>人件費</td>
+                            <td th:text="${#numbers.formatInteger(laborCost, 1, 'COMMA')} + '円'">
+                                0円
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>機械費</td>
+                            <td th:text="${#numbers.formatInteger(machineCost, 1, 'COMMA')} + '円'">
+                                0円
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>その他</td>
+                            <td th:text="${#numbers.formatInteger(otherCost, 1, 'COMMA')} + '円'">
+                                0円
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+        <!-- 月別集計 -->
+        <section class="content-panel">
+
+            <h2 class="section-title">月別集計</h2>
+
+            <div class="table-wrapper">
+
+                <table class="data-table">
+
+                    <thead>
+                        <tr>
+                            <th>月</th>
+                            <th>売上</th>
+                            <th>経費</th>
+                            <th>利益</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr th:each="monthly : ${monthlyProfits}"
+                            th:attr="
+                                data-month=${monthly.yearMonth},
+                                data-sales=${monthly.salesTotal},
+                                data-expense=${monthly.expenseTotal},
+                                data-profit=${monthly.profit}">
+
+                            <td th:text="${monthly.yearMonth}">
+                                2026-10
+                            </td>
+
+                            <td th:text="${#numbers.formatInteger(monthly.salesTotal, 1, 'COMMA')} + '円'">
+                                0円
+                            </td>
+
+                            <td th:text="${#numbers.formatInteger(monthly.expenseTotal, 1, 'COMMA')} + '円'">
+                                0円
+                            </td>
+
+                            <td th:text="${#numbers.formatInteger(monthly.profit, 1, 'COMMA')} + '円'">
+                                0円
+                            </td>
+
+                        </tr>
+
+                        <tr th:if="${#lists.isEmpty(monthlyProfits)}">
+                            <td colspan="4" class="empty-message">
+                                月別の集計データがありません。
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+        <!-- 月別グラフ -->
+        <section class="content-panel">
+
+            <h2 class="section-title">
+                月別売上・経費・利益グラフ
+            </h2>
+
+            <div class="chart-container">
+                <canvas id="monthlyChart"></canvas>
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer>
+        Pavement Management System
+    </footer>
+
+    <!-- グラフ表示用ライブラリ -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        const rows = document.querySelectorAll(
+            "tbody tr[data-month]"
+        );
+
+        const labels = [];
+        const salesData = [];
+        const expenseData = [];
+        const profitData = [];
+
+        rows.forEach(row => {
+
+            labels.push(row.dataset.month);
+
+            salesData.push(
+                Number(row.dataset.sales)
+            );
+
+            expenseData.push(
+                Number(row.dataset.expense)
+            );
+
+            profitData.push(
+                Number(row.dataset.profit)
+            );
+
+        });
+
+        const ctx = document.getElementById(
+            "monthlyChart"
+        );
+
+        if (typeof Chart !== "undefined" && ctx) {
+
+            new Chart(ctx, {
+
+                type: "bar",
+
+                data: {
+                    labels: labels,
+
+                    datasets: [
+                        {
+                            label: "売上",
+                            data: salesData,
+                            backgroundColor: "#4578ad"
+                        },
+                        {
+                            label: "経費",
+                            data: expenseData,
+                            backgroundColor: "#d89b45"
+                        },
+                        {
+                            label: "利益",
+                            data: profitData,
+                            backgroundColor: "#16835d"
+                        }
+                    ]
+                },
+
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+
+                            ticks: {
+                                callback: function(value) {
+                                    return value.toLocaleString() + "円";
+                                }
+                            }
+                        }
+                    }
+                }
+
+            });
+
+        }
+    </script>
+
+</body>
+</html>

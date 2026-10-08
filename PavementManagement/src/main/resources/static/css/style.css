@@ -1,0 +1,512 @@
+
+/* =========================
+   1. 画面全体
+   ========================= */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background-color: #f3f6fa;
+    color: #253247;
+    font-family: "Yu Gothic", "Meiryo", sans-serif;
+    font-size: 16px;
+}
+
+
+/* =========================
+   2. ヘッダー
+   ========================= */
+
+header {
+    background-color: #183153;
+    color: white;
+    padding: 22px 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+header h1 {
+    font-size: 24px;
+    margin: 0;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
+}
+
+.header-link {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.header-link:hover {
+    text-decoration: underline;
+}
+
+.logout-button {
+    background-color: white;
+    color: #183153;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 18px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.logout-button:hover {
+    background-color: #e8eef5;
+}
+
+
+/* =========================
+   3. メインコンテンツ
+   ========================= */
+
+main {
+    max-width: 1250px;
+    margin: 40px auto;
+    padding: 0 24px;
+}
+
+.intro {
+    margin-bottom: 36px;
+}
+
+.intro h2 {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.intro p {
+    color: #65758b;
+    line-height: 1.7;
+}
+
+.section-title {
+    font-size: 21px;
+    margin: 35px 0 20px;
+}
+
+
+/* =========================
+   4. ダッシュボード
+   ========================= */
+
+.dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 18px;
+}
+
+.card {
+    background-color: white;
+    padding: 25px 22px;
+    border-radius: 12px;
+    border: 1px solid #e7ebf0;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+}
+
+.label {
+    color: #64748b;
+    font-size: 15px;
+    margin-bottom: 16px;
+}
+
+.value {
+    font-size: 25px;
+    font-weight: bold;
+    overflow-wrap: anywhere;
+}
+
+.profit {
+    color: #16835d;
+}
+
+.unpaid {
+    color: #c47b16;
+}
+
+
+/* =========================
+   5. 業務メニュー
+   ========================= */
+
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 18px;
+}
+
+.menu-card {
+    display: block;
+    background-color: white;
+    padding: 28px 24px;
+    border-radius: 12px;
+    border: 1px solid #e7ebf0;
+    text-decoration: none;
+    color: #253247;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+    transition: 0.2s;
+}
+
+.menu-card:hover {
+    transform: translateY(-3px);
+    border-color: #4578ad;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+}
+
+.menu-title {
+    font-size: 19px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.menu-description {
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+
+/* =========================
+   6. ページ上部の操作
+   ========================= */
+
+.page-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+}
+
+
+/* =========================
+   7. コンテンツパネル
+   ========================= */
+
+.content-panel {
+    background-color: white;
+    border: 1px solid #e7ebf0;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+}
+
+.content-panel .section-title {
+    margin-top: 0;
+}
+
+
+/* =========================
+   8. 検索フォーム
+   ========================= */
+
+.search-form {
+    display: flex;
+    align-items: end;
+    gap: 18px;
+    flex-wrap: wrap;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.form-group input,
+.form-group select {
+    padding: 11px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 15px;
+    min-width: 180px;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: 2px solid #4578ad;
+    outline-offset: 1px;
+}
+
+.search-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+
+/* =========================
+   9. ボタン
+   ========================= */
+
+.btn {
+    display: inline-block;
+    padding: 11px 18px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+    border: 1px solid transparent;
+    cursor: pointer;
+    text-align: center;
+}
+
+.btn-primary {
+    background-color: #183153;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #294b75;
+}
+
+.btn-secondary {
+    background-color: white;
+    color: #183153;
+    border-color: #cbd5e1;
+}
+
+.btn-secondary:hover {
+    background-color: #f1f5f9;
+}
+
+.btn-danger {
+    background-color: #b42318;
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #912018;
+}
+
+.btn-small {
+    padding: 7px 12px;
+    font-size: 13px;
+}
+
+
+/* =========================
+   10. テーブル
+   ========================= */
+
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.data-table th,
+.data-table td {
+    padding: 15px 12px;
+    border-bottom: 1px solid #e7ebf0;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.data-table th {
+    background-color: #f1f5f9;
+    color: #475569;
+    font-size: 14px;
+}
+
+.data-table td {
+    font-size: 15px;
+}
+
+.data-table tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+
+/* =========================
+   11. 状態・区分の表示
+   ========================= */
+
+.status-badge {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 20px;
+    background-color: #e8eef5;
+    color: #183153;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+
+/* =========================
+   12. テーブル内の操作
+   ========================= */
+
+.table-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.table-actions form {
+    margin: 0;
+}
+
+.empty-message {
+    text-align: center !important;
+    color: #64748b;
+    padding: 30px !important;
+}
+
+
+/* =========================
+   13. 利益・収支画面
+   ========================= */
+
+/* 全体集計と経費内訳の間隔 */
+.profit-section {
+    margin-top: 30px;
+}
+
+/* 月別グラフの表示領域 */
+.chart-container {
+    position: relative;
+    width: 100%;
+    height: 380px;
+}
+
+
+/* =========================
+   14. フッター
+   ========================= */
+
+footer {
+    text-align: center;
+    color: #94a3b8;
+    font-size: 13px;
+    padding: 30px 15px;
+}
+
+
+/* =========================
+   15. スマートフォン対応
+   ========================= */
+
+@media (max-width: 600px) {
+
+    header {
+        padding: 20px;
+    }
+
+    header h1 {
+        font-size: 20px;
+    }
+
+    main {
+        margin: 24px auto;
+        padding: 0 16px;
+    }
+
+    .intro h2 {
+        font-size: 24px;
+    }
+
+    .content-panel {
+        padding: 16px;
+    }
+
+    .search-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .form-group input,
+    .form-group select {
+        width: 100%;
+    }
+
+    .chart-container {
+        height: 300px;
+    }
+
+    .value {
+        font-size: 22px;
+    }
+
+	/* =========================
+	   登録・編集フォーム
+	   ========================= */
+
+	.form-panel {
+	    max-width: 700px;
+	    margin-left: auto;
+	    margin-right: auto;
+	}
+
+	.form-panel form {
+	    display: flex;
+	    flex-direction: column;
+	    gap: 22px;
+	}
+
+	.form-panel .form-group {
+	    display: flex;
+	    flex-direction: column;
+	    align-items: stretch;
+	    gap: 8px;
+	}
+
+	.form-panel .form-group label {
+	    font-size: 15px;
+	    font-weight: bold;
+	    color: #334155;
+	}
+
+	.form-panel .form-group input,
+	.form-panel .form-group select {
+	    width: 100%;
+	    min-width: 0;
+	    padding: 12px;
+	    border: 1px solid #cbd5e1;
+	    border-radius: 6px;
+	    background-color: white;
+	    font-size: 16px;
+	}
+
+	.form-panel .form-group input:focus,
+	.form-panel .form-group select:focus {
+	    outline: 2px solid #4578ad;
+	    outline-offset: 1px;
+	}
+
+	.error {
+	    color: #b42318;
+	    font-size: 14px;
+	}
+
+	.form-actions {
+	    display: flex;
+	    gap: 12px;
+	    flex-wrap: wrap;
+	    margin-top: 12px;
+	}
+
+}

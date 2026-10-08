@@ -1,0 +1,147 @@
+
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>舗装会社 業務管理システム</title>
+
+    <!-- CSSファイルを読み込む -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+    <!-- ヘッダー -->
+    <header>
+        <h1>舗装会社 業務管理システム</h1>
+
+        <div class="header-right">
+            <span>
+                ログイン中：
+                <strong th:text="${#authentication.name}">
+                    ユーザー
+                </strong>
+                <span th:if="${#authentication.name == 'admin'}">
+                    （管理者）
+                </span>
+                <span th:if="${#authentication.name == 'user'}">
+                    （一般ユーザー）
+                </span>
+            </span>
+
+            <form th:action="@{/logout}" method="post">
+                <button type="submit" class="logout-button">
+                    ログアウト
+                </button>
+            </form>
+        </div>
+    </header>
+
+    <!-- メインコンテンツ -->
+    <main>
+
+        <section class="intro">
+            <h2>業務ダッシュボード</h2>
+            <p>工事・経費・売上・利益を一元管理します。</p>
+        </section>
+
+        <!-- 現在の状況 -->
+        <h2 class="section-title">現在の状況</h2>
+
+        <div class="dashboard">
+
+            <div class="card">
+                <div class="label">工事件数</div>
+                <div class="value"
+                     th:text="${projectCount} + '件'">
+                    0件
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="label">売上合計</div>
+                <div class="value"
+                     th:text="${#numbers.formatInteger(salesTotal, 1, 'COMMA')} + '円'">
+                    0円
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="label">経費合計</div>
+                <div class="value"
+                     th:text="${#numbers.formatInteger(expenseTotal, 1, 'COMMA')} + '円'">
+                    0円
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="label">利益</div>
+                <div class="value profit"
+                     th:text="${#numbers.formatInteger(profit, 1, 'COMMA')} + '円'">
+                    0円
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="label">未入金額</div>
+                <div class="value unpaid"
+                     th:text="${#numbers.formatInteger(unpaidTotal, 1, 'COMMA')} + '円'">
+                    0円
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 業務メニュー -->
+        <h2 class="section-title">業務メニュー</h2>
+
+        <div class="menu-grid">
+
+            <a th:href="@{/projects}" class="menu-card">
+                <div class="menu-title">工事管理 →</div>
+                <div class="menu-description">
+                    工事情報の登録・編集・進捗状況の確認
+                </div>
+            </a>
+
+            <a th:href="@{/expenses}" class="menu-card">
+                <div class="menu-title">経費管理 →</div>
+                <div class="menu-description">
+                    材料費・外注費などの経費を管理
+                </div>
+            </a>
+
+            <a th:href="@{/sales}" class="menu-card">
+                <div class="menu-title">売上管理 →</div>
+                <div class="menu-description">
+                    売上金額・入金状況の確認
+                </div>
+            </a>
+
+            <a th:href="@{/profit}" class="menu-card">
+                <div class="menu-title">利益・収支 →</div>
+                <div class="menu-description">
+                    売上・経費・利益をまとめて確認
+                </div>
+            </a>
+
+            <a th:href="@{/project-profit}" class="menu-card">
+                <div class="menu-title">工事別収支 →</div>
+                <div class="menu-description">
+                    工事ごとの売上・経費・利益を比較
+                </div>
+            </a>
+
+        </div>
+
+    </main>
+
+    <!-- フッター -->
+    <footer>
+        Pavement Management System
+    </footer>
+
+</body>
+</html>

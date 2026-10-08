@@ -1,0 +1,167 @@
+
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>経費編集 | 舗装会社 業務管理システム</title>
+
+    <!-- 共通CSS -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+    <!-- ヘッダー -->
+    <header>
+        <h1>舗装会社 業務管理システム</h1>
+
+        <div class="header-right">
+            <a th:href="@{/expenses}" class="header-link">
+                経費一覧
+            </a>
+        </div>
+    </header>
+
+    <main>
+
+        <!-- ページタイトル -->
+        <section class="intro">
+            <h2>経費編集</h2>
+            <p>登録済みの経費情報を編集できます。</p>
+        </section>
+
+        <!-- 経費編集フォーム -->
+        <section class="content-panel form-panel">
+
+            <h2 class="section-title">経費情報の編集</h2>
+
+            <form th:action="@{/expenses/edit/{id}(id=${expense.id})}"
+                  th:object="${expense}"
+                  method="post">
+
+                <!-- 経費名 -->
+                <div class="form-group">
+
+                    <label for="expenseName">経費名</label>
+
+                    <input type="text"
+                           id="expenseName"
+                           th:field="*{expenseName}"
+                           placeholder="経費名を入力">
+
+                    <span class="error"
+                          th:if="${#fields.hasErrors('expenseName')}"
+                          th:errors="*{expenseName}">
+                    </span>
+
+                </div>
+
+                <!-- 工事名 -->
+                <div class="form-group">
+
+                    <label for="project">工事名</label>
+
+                    <select id="project" th:field="*{project}">
+
+                        <option value="">選択してください</option>
+
+                        <option th:each="project : ${projects}"
+                                th:value="${project.id}"
+                                th:text="${project.projectName}">
+                        </option>
+
+                    </select>
+
+                    <span class="error"
+                          th:if="${#fields.hasErrors('project')}"
+                          th:errors="*{project}">
+                    </span>
+
+                </div>
+
+                <!-- 金額 -->
+                <div class="form-group">
+
+                    <label for="amount">経費金額（円）</label>
+
+                    <input type="number"
+                           id="amount"
+                           th:field="*{amount}"
+                           min="1"
+                           step="1"
+                           placeholder="金額を入力">
+
+                    <span class="error"
+                          th:if="${#fields.hasErrors('amount')}"
+                          th:errors="*{amount}">
+                    </span>
+
+                </div>
+
+                <!-- 支払日 -->
+                <div class="form-group">
+
+                    <label for="paymentDate">支払日</label>
+
+                    <input type="date"
+                           id="paymentDate"
+                           th:field="*{paymentDate}">
+
+                    <span class="error"
+                          th:if="${#fields.hasErrors('paymentDate')}"
+                          th:errors="*{paymentDate}">
+                    </span>
+
+                </div>
+
+                <!-- 経費区分 -->
+                <div class="form-group">
+
+                    <label for="category">経費区分</label>
+
+                    <select id="category" th:field="*{category}">
+
+                        <option value="">選択してください</option>
+                        <option value="材料費">材料費</option>
+                        <option value="人件費">人件費</option>
+                        <option value="機械費">機械費</option>
+                        <option value="その他">その他</option>
+
+                    </select>
+
+                    <span class="error"
+                          th:if="${#fields.hasErrors('category')}"
+                          th:errors="*{category}">
+                    </span>
+
+                </div>
+
+                <!-- 操作ボタン -->
+                <div class="form-actions">
+
+                    <button type="submit" class="btn btn-primary">
+                        更新する
+                    </button>
+
+                    <a th:href="@{/expenses}" class="btn btn-secondary">
+                        キャンセル
+                    </a>
+
+                </div>
+
+            </form>
+
+        </section>
+
+    </main>
+
+    <footer>
+        Pavement Management System
+    </footer>
+
+</body>
+</html>
+

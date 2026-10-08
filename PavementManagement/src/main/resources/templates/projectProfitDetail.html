@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>工事別収支詳細</title>
+
+    <style>
+        body {
+            font-size: 18px;
+        }
+
+        h1 {
+            font-size: 32px;
+        }
+
+        h2 {
+            font-size: 24px;
+        }
+
+        .summary {
+            width: 500px;
+        }
+
+        .item {
+            margin-bottom: 20px;
+        }
+
+        .label {
+            font-weight: bold;
+        }
+
+        .amount {
+            font-size: 24px;
+        }
+
+        .profit {
+            border-top: 2px solid black;
+            padding-top: 20px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 500px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #eeeeee;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>工事別収支詳細</h1>
+
+    <h2 th:text="${projectName}"></h2>
+
+    <div class="summary">
+
+        <div class="item">
+            <div class="label">売上合計</div>
+            <div class="amount" th:text="${salesTotal} + '円'"></div>
+        </div>
+
+        <div class="item">
+            <div class="label">経費合計</div>
+            <div class="amount" th:text="${expenseTotal} + '円'"></div>
+        </div>
+
+        <div class="item profit">
+            <div class="label">利益</div>
+            <div class="amount" th:text="${profit} + '円'"></div>
+        </div>
+
+        <div class="item">
+            <div class="label">利益率</div>
+            <div class="amount" th:text="${profitRate} + '%'"></div>
+        </div>
+
+    </div>
+
+    <h2>経費内訳</h2>
+
+    <table border="1">
+
+        <thead>
+            <tr>
+                <th>経費区分</th>
+                <th>金額</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            <tr>
+                <td>材料費</td>
+                <td th:text="${materialCost} + '円'"></td>
+            </tr>
+
+            <tr>
+                <td>人件費</td>
+                <td th:text="${laborCost} + '円'"></td>
+            </tr>
+
+            <tr>
+                <td>機械費</td>
+                <td th:text="${machineCost} + '円'"></td>
+            </tr>
+
+            <tr>
+                <td>その他</td>
+                <td th:text="${otherCost} + '円'"></td>
+            </tr>
+
+        </tbody>
+
+    </table>
+
+    <p>
+        <a href="/project-profit">工事別収支に戻る</a>
+    </p>
+
+    <p>
+        <a href="/">トップページに戻る</a>
+    </p>
+
+</body>
+</html>
