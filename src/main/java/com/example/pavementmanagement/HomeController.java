@@ -1,4 +1,4 @@
- 
+
 package com.example.pavementmanagement;
 
 import org.springframework.security.core.Authentication;
@@ -32,12 +32,15 @@ public class HomeController {
     @GetMapping("/")
     public String index(Model model, Authentication authentication) {
 
+        // 工事件数
         int projectCount = projectRepository.findAll().size();
 
+        // 売上・経費・未入金額
         int salesTotal = 0;
         int expenseTotal = 0;
         int unpaidTotal = 0;
 
+        // 売上の集計
         for (Sales sales : salesRepository.findAll()) {
 
             salesTotal += sales.getAmount();
@@ -47,29 +50,38 @@ public class HomeController {
             }
         }
 
+        // 経費の集計
         for (Expense expense : expenseRepository.findAll()) {
             expenseTotal += expense.getAmount();
         }
 
+        // 利益の計算
         int profit = salesTotal - expenseTotal;
 
+        // 集計結果をHTMLへ渡す
         model.addAttribute("projectCount", projectCount);
         model.addAttribute("salesTotal", salesTotal);
         model.addAttribute("expenseTotal", expenseTotal);
         model.addAttribute("profit", profit);
         model.addAttribute("unpaidTotal", unpaidTotal);
 
-        // ログインユーザー情報をHTMLに渡す
-        if (authentication != null) {
+        // ログインユーザー情報をHTMLへ渡す
+        String username = "ゲスト";
+        boolean isAdmin = false;
 
-            model.addAttribute("username", authentication.getName());
+        if (authentication != null
+                && authentication.isAuthenticated()
+                && !"anonymousUser".equals(authentication.getName())) {
 
-            boolean isAdmin = authentication.getAuthorities().stream()
+            username = authentication.getName();
+
+            isAdmin = authentication.getAuthorities().stream()
                     .anyMatch(authority ->
                             "ROLE_ADMIN".equals(authority.getAuthority()));
-
-            model.addAttribute("isAdmin", isAdmin);
         }
+
+        model.addAttribute("username", username);
+        model.addAttribute("isAdmin", isAdmin);
 
         return "index";
     }
@@ -79,4 +91,5 @@ public class HomeController {
         return "accessDenied";
     }
 }
+
  

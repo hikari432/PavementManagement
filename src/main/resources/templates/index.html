@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
 
@@ -20,13 +21,15 @@
         <div class="header-right">
             <span>
                 ログイン中：
-                <strong th:text="${#authentication.name}">
+                <strong th:text="${username != null ? username : 'ゲスト'}">
                     ユーザー
                 </strong>
-                <span th:if="${#authentication.name == 'admin'}">
+
+                <span th:if="${username == 'admin'}">
                     （管理者）
                 </span>
-                <span th:if="${#authentication.name == 'user'}">
+
+                <span th:if="${username == 'user'}">
                     （一般ユーザー）
                 </span>
             </span>
